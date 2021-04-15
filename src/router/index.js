@@ -2,18 +2,23 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
+import Welcome from '../components/Welcome.vue'
+import Users from '../components/user/Users.vue'
+
 Vue.use(VueRouter)
 
-// const routes = [
-  
-// ]
 
 const router = new VueRouter({
   routes:[
     //如果访问login地址，通过component属性来指定要显示的组件
     { path: '/login', component: Login},
     { path: '/', redirect:'/login'},
-    { path: '/home', component: Home},
+    { path: '/home', component: Home,redirect:'/welcome',
+     children:[
+       {path: '/welcome', component: Welcome},
+       {path: '/users', component: Users}
+      
+      ]},
   ]
 })
 //挂载路由导航守卫

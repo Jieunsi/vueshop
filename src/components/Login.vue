@@ -57,6 +57,7 @@ export default {
         //点击重置按钮，重置登录表单
         resetLoginForm(){
             this.$refs.loginFormRef.resetFields();
+            this.$message.success('重置成功');
         },
         login(){
             this.$refs.loginFormRef.validate(async(valid) =>{
