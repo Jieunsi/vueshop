@@ -350,9 +350,9 @@ export default {
       this.setRightDialogVisable = true;
     },
     //通过递归获取角色下所有三级权限的id，并绑定到树形控件
-    getLeafKeys(node,arr){
-        if
-    }
+    // getLeafKeys(node,arr){
+    //     if
+    // }
   }
 };
 </script>
