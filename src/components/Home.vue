@@ -83,6 +83,7 @@ export default {
             this.$message('退出成功');
             //清空token
             window.sessionStorage.removeItem('token');
+            window.sessionStorage.removeItem('activePath');
             //跳转到登录页
             this.$router.push("/login");
         },

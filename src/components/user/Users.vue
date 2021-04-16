@@ -8,7 +8,7 @@
     </el-breadcrumb>
 
     <!-- 卡片视图区域 -->
-    <el-card>
+    <el-card >
       <!-- 搜索与添加区域 -->
 
       <el-row :gutter="20">
@@ -43,7 +43,7 @@
                   {{scope.row}}
           </template>-->
         </el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" >
           <template slot-scope="scope">
             <!-- 修改按钮 -->
             <el-tooltip
@@ -163,7 +163,7 @@ export default {
         //页码
         pagenum: 1,
         //每页显示数量
-        pagesize: 2
+        pagesize: 5
       },
       userList: [],
       total: 0,
@@ -232,11 +232,13 @@ export default {
           }
         ]
       },
+      //修改表单数据
       editForm: {
           username: "",
           email: "",
           mobile: "",
       },
+      //修改表单的规则
       editFormRules:{
         email: [
           {
@@ -321,7 +323,7 @@ export default {
           email: this.addForm.email,
           mobile: this.addForm.mobile
         })
-        console.log(res);
+        
         if (res.meta.status != 201) {
           this.$message.error("添加用户失败！");
           return;
