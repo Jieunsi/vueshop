@@ -13,10 +13,13 @@ html, body, #app{
 
 .el-card{
     box-shadow: 0 1px 1px rgab(0,0,0,0.15) !important;
+    
 }
 
 .el-table{
     margin-top: 15px;
+    height: 100%;
+    
 }
 
 .el-pagination{
@@ -40,3 +43,4 @@ html, body, #app{
     display: flex;
     align-items: center;
 }
+

@@ -22,7 +22,7 @@
       :collapse="isCollapse"
       :collapse-transition="false"
       :router="true"
-      :default-active="activePath"
+      :default-active="$route.path"
       >
       <!-- 一级菜单 -->
       <!-- index只接受字符串，所以要把它转换成字符串 -->
@@ -36,8 +36,7 @@
         </template>
 
         <!-- 二级菜单 -->
-        <el-menu-item :index = " '/' + subItem.path" v-for="subItem in item.children" :key="subItem.id"
-        @click="saveNavState('/' + subItem.path)">
+        <el-menu-item :index = " '/' + subItem.path" v-for="subItem in item.children" :key="subItem.id">
             <template slot="title">
             <!-- 图标 -->
           <i class="el-icon-menu"></i>
@@ -69,13 +68,10 @@ export default {
             iconList: ['el-icon-user-solid', 'el-icon-lock', 'el-icon-s-goods', 'el-icon-s-order', 'el-icon-s-data'],
             //是否折叠
             isCollapse: false,
-            //被激活的链接地址
-            activePath: ''
         }
     },
     created(){
         this.getMenuList();
-        this.activePath = window.sessionStorage.getItem('activePath');
         
     },
     methods:{
@@ -83,7 +79,6 @@ export default {
             this.$message('退出成功');
             //清空token
             window.sessionStorage.removeItem('token');
-            window.sessionStorage.removeItem('activePath');
             //跳转到登录页
             this.$router.push("/login");
         },
@@ -97,10 +92,6 @@ export default {
         toggleCollapse(){
             this.isCollapse = !this.isCollapse;
         },
-        saveNavState(activePath){
-            window.sessionStorage.setItem('activePath',activePath);
-            this.activePath = activePath;
-        }
     }
 }
 </script>
@@ -127,14 +118,16 @@ export default {
     }
 }
 
-.el-aside{
+.el-aside{ 
     background-color: #333744;
     transition:all 0.3s;
     overflow-x: hidden;
 }
 
-.el-main{
+.el-main{ 
     background-color: #eaedf1;
+    height: 100%;
+    width: 100%;
 }
 
 .logo{
@@ -142,8 +135,6 @@ export default {
     height: 60px;
     border-radius: 50%;
 }
-
-
 
 .toggle-button{
     background-color: #4a5064;
@@ -157,9 +148,5 @@ export default {
 
 .el-menu{
     border-right: 0px;
-
 }
-
-
-
 </style>

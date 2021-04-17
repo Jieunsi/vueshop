@@ -2,7 +2,7 @@
   <div>
     <!-- 面包屑导航区域 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/home' }" > 首页 </el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户列表</el-breadcrumb-item>
     </el-breadcrumb>
@@ -39,9 +39,6 @@
           <template v-slot:default="slotProps">
             <el-switch v-model="slotProps.row.mg_state" @change="userStateChanged(slotProps.row)"></el-switch>
           </template>
-          <!-- <template slot-scope="scope">
-                  {{scope.row}}
-          </template>-->
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -88,7 +85,7 @@
                 icon="el-icon-setting"
                 size="mini"
                 @click="setRole(scope.row)"
-                @close ="setRoleDialogClosed"
+                
               ></el-button>
             </el-tooltip>
           </template>
@@ -149,7 +146,7 @@
     </el-dialog>
 
     <!-- 分配角色的对话框 -->
-    <el-dialog title="设置用户角色" :visible.sync="setRoleDialogVisable" width="50%">
+    <el-dialog title="设置用户角色" :visible.sync="setRoleDialogVisable" width="50%" @close="setRoleDialogClosed">
       <div>
         <p>当前的用户：{{this.userInfo.username}}</p>
         <p>当前的角色：{{this.userInfo.role_name}}</p>
@@ -306,9 +303,7 @@ export default {
     };
   },
   methods: {
-    // removePath(){
-    //     window.sessionStorage.removeItem('activePath');
-    // }
+    
     //get方法的参数用params表示
     async getUserList() {
       const { data: res } = await this.$http.get("users", {
@@ -333,6 +328,7 @@ export default {
     },
     //监听switch开关状态的改变
     async userStateChanged(userinfo) {
+      
       const { data: res } = await this.$http.put(
         `users/${userinfo.id}/state/${userinfo.mg_state}`
       );
@@ -450,6 +446,7 @@ export default {
       if(!this.seletedRoleId){
         return this.$message.error('请选择用户的角色')
       }
+      if(this.userInfo.id == 500) return this.$message.error('admin的角色不可更改！')
       const {data:res} = await this.$http.put(`users/${this.userInfo.id}/role`,{rid: this.seletedRoleId})
       if(res.meta.status!=200){
         return this.$message.error('更新角色失败')
@@ -459,9 +456,12 @@ export default {
       this.setRoleDialogVisable = false;
     },
     //监听分配角色对话框的关闭事件
-    setRoleDialogClosed(){
-      this.seletedRoleId = ''
-      this.userInfo = {}
+    setRoleDialogClosed() {
+      this.seletedRoleId = '';
+      this.userInfo = {};
+    },
+    removeNavState(){
+      window.sessionStorage.removeItem('activePath');
     }
   },
   created() {
