@@ -83,7 +83,7 @@
               type="warning"
               icon="el-icon-setting"
               size="mini"
-              @click="showSetRightDialog"
+              @click="showSetRightDialog(slotProps.row)"
             >分配权限</el-button>
           </template>
         </el-table-column>
@@ -128,13 +128,13 @@
       title="分配权限"
       :visible.sync="setRightDialogVisable"
       width="50%"
-      
+      @close="setRightDialogClosed"
     >
       <!-- 树形控件 -->
-      <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" default-expand-all :default-checked-keys="defKeys"></el-tree>
+      <el-tree :data="rightsList" :props="treeProps" show-checkbox node-key="id" default-expand-all :default-checked-keys="defKeys" ref="treeRef"></el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightDialogVisable = false">取 消</el-button>
-        <el-button type="primary" @click="setRightDialogVisable = false">确 定</el-button>
+        <el-button type="primary" @click="allotRights">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -207,7 +207,9 @@ export default {
         children: 'children'
       },
       //默认选中的节点的数组
-      defKeys:[]
+      defKeys:[],
+      //当前修改权限的角色的ID
+      roleId:''
     };
   },
   created() {
@@ -338,7 +340,8 @@ export default {
       }
     },
     //展示分配权限对话框
-    async showSetRightDialog() {
+    async showSetRightDialog(role) {
+      this.roleId = role.id;
       //获取所有权限列表
       const { data: res } = await this.$http.get("rights/tree");
       if (res.meta.status != 200) {
@@ -346,13 +349,41 @@ export default {
       }
       //获取的权限列表保存
       this.rightsList = res.data;
-     
+     //递归获取三级节点的Id
+     this.getLeafKeys(role,this.defKeys);
       this.setRightDialogVisable = true;
     },
-    //通过递归获取角色下所有三级权限的id，并绑定到树形控件
-    // getLeafKeys(node,arr){
-    //     if
-    // }
+    //通过递归获取角色下所有三级权限的id，保存到defkeys数组并绑定到树形控件
+    getLeafKeys(node,arr){
+        if(!node.children){
+          return arr.push(node.id);
+        }
+
+        node.children.forEach(item => {
+          this.getLeafKeys(item,arr)
+        });
+    },
+    //监听权限分配对话框关闭
+    setRightDialogClosed(){
+      this.defKeys = [];
+    },
+    //点击为角色分配权限
+    async allotRights(){
+      const keys = [
+        ...this.$refs.treeRef.getCheckedKeys(),
+        ...this.$refs.treeRef.getHalfCheckedKeys()
+      ]
+      //将数字用“，”分割，拼接为字符串
+      const idStr = keys.join(',')
+      const {data: res} = await this.$http.post(`roles/${this.roleId}/rights`,{rids : idStr})
+      if(res.meta.status != 200){
+        return this.$message.error("分配新的权限失败！")
+      } else{
+        this.$message.success('分配新的权限成功！')
+        this.getRoleList()
+        this.setRightDialogVisable = false;
+      }
+    }  
   }
 };
 </script>
