@@ -44,3 +44,7 @@ html, body, #app{
     align-items: center;
 }
 
+.el-cascader-menu{
+    height: 300px;
+    overflow-x: hidden;
+}

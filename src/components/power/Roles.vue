@@ -17,7 +17,7 @@
       <!-- 角色列表区域 -->
       <el-table :data="rolelist" border stripe>
         <!-- 展开列 -->
-        <el-table-column type="expand">
+        <el-table-column type="expand" class="expand">
           <template v-slot:default="slotProps">
             <el-row
               :class="['bdbottom',i1==0?'bdtop':'','vcenter']"
@@ -389,7 +389,7 @@ export default {
 </script>
 
 <style lang="less" scope>
-.el-table-column {
-  transition: all 0.3s;
+.expand{
+  transition:all 0.3s;
 }
 </style>
