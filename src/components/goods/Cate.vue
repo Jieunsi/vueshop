@@ -43,7 +43,12 @@
             size="mini"
             @click="showEditDialog(scope.row.cat_id)"
           >编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeCatById(scope.row.cat_id)">删除</el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="removeCatById(scope.row.cat_id)"
+          >删除</el-button>
         </template>
       </tree-table>
       <!-- 分页区域 -->
@@ -71,6 +76,7 @@
         ref="addCateFormRef"
         label-width="100px"
       >
+        <el-alert title="可以选择任意级别的分类添加（包括不选择）" type="warning" show-icon></el-alert>
         <el-form-item label="分类名称" prop="cat_name">
           <el-input v-model="addCateForm.cat_name"></el-input>
         </el-form-item>
@@ -302,19 +308,21 @@ export default {
       this.$refs.editFormRef.resetFields();
     },
     //修改分类名称并提交
-    editUserInfo(){
-      this.$refs.editFormRef.validate(async valid=>{
-        if(!valid) {
+    editUserInfo() {
+      this.$refs.editFormRef.validate(async valid => {
+        if (!valid) {
           this.$message.error("更新分类名称失败");
           return;
         }
-         const { data : res } = await this.$http.put('categories/'+this.editForm.cat_id, { cat_name: this.editForm.cat_name } );
-        if(res.meta.status!=200) {
-          this.$message.error('更新分类名称失败')
+        const { data: res } = await this.$http.put(
+          "categories/" + this.editForm.cat_id,
+          { cat_name: this.editForm.cat_name }
+        );
+        if (res.meta.status != 200) {
+          this.$message.error("更新分类名称失败");
           return;
-        }
-        else{
-          this.$message.success('更新分类名称成功')
+        } else {
+          this.$message.success("更新分类名称成功");
           this.editDialogVisable = false;
           this.getCateList();
         }
@@ -345,9 +353,14 @@ export default {
       this.$message.success("成功删除分类！");
       this.getCateList();
     },
+    
   }
 };
 </script>
 
 <style lang="less" scoped>
+.el-alert{
+  margin-bottom: 15px;
+  width: 330px;
+}
 </style>

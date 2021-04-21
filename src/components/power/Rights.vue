@@ -8,7 +8,7 @@
   </el-breadcrumb>
     
   <!-- 卡片视图 -->
-  <el-card>
+  <el-card >
       
       <el-table :data="rightsList" border stripe>
           <!-- 权限列表列名 -->
@@ -57,4 +57,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 </style>
