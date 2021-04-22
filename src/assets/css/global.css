@@ -49,3 +49,17 @@ html, body, #app{
     height: 300px;
     overflow-x: hidden;
 }
+
+.el-steps{
+    margin:15px;
+    display: flex;
+    justify-content: center;
+}
+
+.el-step__title{
+    font-size: 13px;
+}
+
+.ql-editor{
+    min-height: 300px;
+}
