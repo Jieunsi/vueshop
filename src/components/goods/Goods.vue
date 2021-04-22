@@ -250,7 +250,11 @@ export default {
     //
     goAddPage(){
       this.$router.push('/goods/add')
+    },
+    showProgressBox(){
+      
     }
+    
   }
 };
 </script>

@@ -298,13 +298,10 @@ export default {
         this.addForm.attrs.push(newInfo);
       });
       form.attrs = this.addForm.attrs;
-      console.log(form)
       const {data:res} = await this.$http.post('goods',form)
-      console.log(res.meta)
       if(res.meta.status != 201){
           return this.$message.error('添加商品失败！')
       }
-      
       this.$message.success('添加商品成功！')
       this.$router.push('/goods')
     }
